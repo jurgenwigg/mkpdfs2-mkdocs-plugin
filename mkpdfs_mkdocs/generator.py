@@ -58,9 +58,16 @@ class Generator(object):
         pdf_path = os.path.join(self.mkdconfig['site_dir'],
                                 self.config['output_path'])
         os.makedirs(os.path.dirname(pdf_path), exist_ok=True)
+
+        if self.config["generate_html"]:
+            html_path = os.path.dirname(pdf_path)+"/pdf.html"
+            f = open(html_path, "w")
+            f.write(str(self.html))
+            self.logger.log(msg=f'The html version of the documentation has been generated in {html_path}', level=logging.INFO, )
+            
         html = HTML(string=str(self.html)).write_pdf(pdf_path,
                                                      font_config=font_config)
-        self.logger.log(msg='The PDF version of the documentation has been generated.', level=logging.INFO, )
+        self.logger.log(msg=f'The PDF version of the documentation has been generated in {pdf_path}.', level=logging.INFO, )
 
     def add_nav(self, nav):
         self.nav = nav
@@ -152,7 +159,7 @@ class Generator(object):
             h3 = self.html.new_tag('h3')
             h3.insert(0, n.title)
             self._toc.append(h3)
-            if n.is_page:
+            if n.is_page and n.toc:
                 ptoc = self._gen_toc_page(n.file.url, n.toc)
                 self._toc.append(ptoc)
             else:
@@ -183,17 +190,23 @@ class Generator(object):
         return os.path.join(os.path.relpath(pdf_split[0], start_dir),
                             pdf_split[1])
 
-    def _gen_toc_section(self, section):
-        if section.children:  # External Links do not have children
+    def _gen_toc_section(self, section, level=1):
+        if section.children: 
             for p in section.children:
                 if p.is_page and p.meta and 'pdf' \
                         in p.meta and not p.meta['pdf']:
+                    continue
+                if p.children:
+                    h2 = self.html.new_tag("h4", **{'class': f'level-{level}'})
+                    h2.insert(0, p.title)
+                    self._toc.append(h2)
+                    self._gen_toc_section(p, level=level+1)
                     continue
                 if not hasattr(p, 'file'):
                     # Skip external links
                     continue
                 stoc = self._gen_toc_for_section(p.file.url, p)
-                child = self.html.new_tag('div')
+                child = self.html.new_tag('div',**{'class': f'level-{level}'})
                 child.append(stoc)
                 self._toc.append(child)
 
