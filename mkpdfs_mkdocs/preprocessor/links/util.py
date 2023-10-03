@@ -1,21 +1,24 @@
+"""Utilities for the links handling in preprocessor."""
 import os
 
 from bs4 import BeautifulSoup
 from weasyprint import urls
 
 
-# check if href is relative --
-# if it is relative it *should* be an html that generates a PDF doc
-def is_doc(href: str):
+def is_doc(href: str) -> bool:
+    """Checks if href is relative.
+    
+    If it is relative it *should* be an html that generates a PDF doc.
+    """
     if urls.url_is_absolute(href):
         return False
     if os.path.isabs(href):
         return False
-
     return True
 
 
 def rel_pdf_href(href: str):
+    """Returns relative link for PDF."""
     head, tail = os.path.split(href)
     filename, _ = os.path.splitext(tail)
 
@@ -27,14 +30,15 @@ def rel_pdf_href(href: str):
 
 
 def abs_asset_href(href: str, base_url: str):
+    """Returns absolute path to the asset."""
     if urls.url_is_absolute(href) or os.path.isabs(href):
         return href
 
     return urls.iri_to_uri(urls.urljoin(base_url, href))
 
 
-# makes all relative asset links absolute
 def replace_asset_hrefs(soup: BeautifulSoup, base_url: str):
+    """Makes all relative asset links absolute."""
     for link in soup.find_all("link", href=True):
         link["href"] = abs_asset_href(link["href"], base_url)
 
@@ -75,5 +79,6 @@ def normalize_href(href: str, rel_url: str):
     return os.path.normpath(os.path.join(rel_dir, href))
 
 
-def get_body_id(url: str):
-    return "{}:".format(url)
+def get_body_id(url: str) -> str:
+    """Returns body ID."""
+    return f"{url}:"
