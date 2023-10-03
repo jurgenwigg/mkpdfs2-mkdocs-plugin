@@ -1,4 +1,4 @@
-# MkPDFs for MkDocs 
+# MkPDFs v2 for MkDocs 
 
 > :bangbang: This is a fork of original comwes/mkpdfs-mkdocs-plugin
 > 
