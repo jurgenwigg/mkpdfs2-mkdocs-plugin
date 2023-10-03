@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkpdfs2_mkdocs"
+authors = [
+    {name = "jurgenwigg", email = "jurgenwigg@protonmail.com"},
+]
+description="Allows the generation of the PDF version of your MkDocs documentation."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["mkdocs", "documentation", "pdf", "export", "weasyprint", "markdown", "plugin"]
+license = {text = "GPLv3"}
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Topic :: Documentation",
+    "Topic :: Printing",
+    "Programming Language :: Other",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "weasyprint>=0.44",
+    "mkdocs>=0.17",
+    "beautifulsoup4>=4.6.3"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = ["tox"]
+
+[project.entry-points."mkdocs.plugins"]
+mkpdfs = "mkpdfs_mkdocs:Mkpdfs"

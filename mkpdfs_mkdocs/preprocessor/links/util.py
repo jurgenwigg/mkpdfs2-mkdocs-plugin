@@ -1,7 +1,7 @@
 import os
 
-from weasyprint import urls
 from bs4 import BeautifulSoup
+from weasyprint import urls
 
 
 # check if href is relative --
@@ -19,11 +19,12 @@ def rel_pdf_href(href: str):
     head, tail = os.path.split(href)
     filename, _ = os.path.splitext(tail)
 
-    internal = href.startswith('#')
+    internal = href.startswith("#")
     if not is_doc(href) or internal:
         return href
 
-    return urls.iri_to_uri(os.path.join(head, filename + '.pdf'))
+    return urls.iri_to_uri(os.path.join(head, filename + ".pdf"))
+
 
 def abs_asset_href(href: str, base_url: str):
     if urls.url_is_absolute(href) or os.path.isabs(href):
@@ -31,13 +32,14 @@ def abs_asset_href(href: str, base_url: str):
 
     return urls.iri_to_uri(urls.urljoin(base_url, href))
 
+
 # makes all relative asset links absolute
 def replace_asset_hrefs(soup: BeautifulSoup, base_url: str):
-    for link in soup.find_all('link', href=True):
-        link['href'] = abs_asset_href(link['href'], base_url)
+    for link in soup.find_all("link", href=True):
+        link["href"] = abs_asset_href(link["href"], base_url)
 
     for asset in soup.find_all(src=True):
-        asset['src'] = abs_asset_href(asset['src'], base_url)
+        asset["src"] = abs_asset_href(asset["src"], base_url)
 
     return soup
 
@@ -74,4 +76,4 @@ def normalize_href(href: str, rel_url: str):
 
 
 def get_body_id(url: str):
-    return '{}:'.format(url)
+    return "{}:".format(url)
