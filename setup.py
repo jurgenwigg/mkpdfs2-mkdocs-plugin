@@ -5,7 +5,7 @@ long_description = (Path(__file__).parent / "README.md").read_text(encoding="utf
 
 setup(
     name="mkpdfs2-mkdocs",
-    version="1.0.1",
+    version="1.1.1",
     url="https://github.com/jurgenwigg/mkpdfs2-mkdocs-plugin",
     license="GPLv3",
     author="Comwes",
