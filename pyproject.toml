@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkpdfs2-mkdocs"
+description = "Allows the generation of the PDF version of your MkDocs documentation."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "GPLv3" }
+authors = [{ name = "Comwes", email = "contact@comwes.eu" }]
+maintainers = [{ name = "jurgenwigg", email = "jurgenwigg@protonmail.com" }]
+
+dependencies = [
+    "mkdocs>=0.17",
+    "weasyprint>=0.44",
+    "beautifulsoup4>=4.6.3",
+    "html5lib",
+]
+dynamic = ["version"]
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.setuptools_scm]
+[tool.setuptools.dynamic]
+[project.optional-dependencies]
+dev = ["black", "isort", "pylint", "tox", "pytest"]
+test = ["pytest", "pytest-cov", "black", "pylint", "tox"]
+build = ["build"]
+
+[project.urls]
+Source = "https://github.com/jurgenwigg/mkpdfs2-mkdocs-plugin"
+Issues = "https://github.com/jurgenwigg/mkpdfs2-mkdocs-plugin/issues"
+
+[project.entry-points."mkdocs.plugins"]
+"mkpdfs" = "mkpdfs_mkdocs:Mkpdfs"
