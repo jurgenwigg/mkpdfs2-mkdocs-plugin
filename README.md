@@ -57,8 +57,8 @@ or with options
 plugins:
     - search
     - mkpdfs:
-        - company: The War Company Inc.
-        - author: Monsieur Silvestre
+        company: The War Company Inc.
+        author: Monsieur Silvestre
 ```
 
 > **Note:** If you enable this plugin and you don't have `plugins` entry in your MkDocs config file yet, you will need to explicitly enable the `search` plugin. This plugin is enabled by default when no `plugins` entry is set.
